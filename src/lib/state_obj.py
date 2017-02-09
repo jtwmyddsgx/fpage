@@ -3,7 +3,14 @@
 from collections import OrderedDict
 
 
-class StateObject(object):
+class MetaClass(type):
+    def __new__(cls, cls_name, bases, attrs):
+        new_class = super(MetaClass, cls).__new__(cls, cls_name, bases, attrs)
+        new_class.init()
+        return new_class
+
+
+class StateObject(object,  metaclass=MetaClass):
     txt = {}
     _keys = []  # dummy
     _values = []  # dummy
@@ -46,12 +53,12 @@ if __name__ == '__main__':
     class MyState(StateObject):
         DEL = 0
         HIDE = 10
-        CLOSE = 30 # 禁止回复
+        CLOSE = 30  # 禁止回复
         NORMAL = 50
 
-        txt = {DEL: "删除", HIDE: "隐藏", CLOSE:"关闭", NORMAL:"正常"}
+        txt = {DEL: "删除", HIDE: "隐藏", CLOSE: "关闭", NORMAL: "正常"}
 
-    MyState.init()
+    # MyState.init()
     print(list(MyState.keys()))
     print(list(MyState.values()))
     print(list(MyState.items()))
